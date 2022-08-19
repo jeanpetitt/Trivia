@@ -40,10 +40,11 @@ def create_app(test_config=None):
         # obtenir une liste de categorie
         list_cat = [categorie.format() for categorie in categories]
         
-        if len(list_cat==0):
+        if len(list_cat) == 0:
             abort(404)
         
         return jsonify({
+            'success': True,
             'categories': list_cat,
         })
     
@@ -73,8 +74,8 @@ def create_app(test_config=None):
         })
 
     # route permettant de supprimer une question
-    @app.route("/questions/<int:question_id>", methods=['DELETE'])
-    def delete_book(question_id):
+    @app.route("/questions/<int:question_id>/delete", methods=['DELETE'])
+    def delete_question(question_id):
         try:
             question = Question.query.filter(Question.id == question_id).one_or_none()
             if question is None:
@@ -87,7 +88,7 @@ def create_app(test_config=None):
                 {
                     "success": True,
                     "deleted": question_id,
-                    "question": current_questions, 
+                    "questions": current_questions, 
                     "total_questions": len(Question.query.all()),
                 }
             )
@@ -114,7 +115,8 @@ def create_app(test_config=None):
                 'success': True,
                 'created': question.id,
                 'questions': current_questions,
-                'total_question': len(Question.query.all())
+                'total_questions': len(Question.query.all()),
+                'current_category': None
             })
         except:
             abort(422)
@@ -207,7 +209,7 @@ def create_app(test_config=None):
         "success": False,
         "error": 404,
         "message": "ressource Not found"
-        }), 40
+        }), 404
         
     @app.errorhandler(422)
     def unprocessable(error):
