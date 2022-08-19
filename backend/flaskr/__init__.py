@@ -39,6 +39,10 @@ def create_app(test_config=None):
         categories = Category.query.all()
         # obtenir une liste de categorie
         list_cat = [categorie.format() for categorie in categories]
+        
+        if len(list_cat==0):
+            abort(404)
+        
         return jsonify({
             'categories': list_cat,
         })
@@ -52,12 +56,9 @@ def create_app(test_config=None):
         select_question = Question.query.order_by(Question.id).all()
         current_questions = paginate_question(request, select_question)
         questions = Question.query.all()
-        # categories
-        select_category = Category.query.order_by(Category.id).all()
-        current_categories = paginate_question(request, select_category)
-        categories = Category.query.all()
         
         # obtenir une liste de categorie
+        categories = Category.query.all()
         list_cat = [categorie.format() for categorie in categories]
         
         if len(current_questions) == 0:
@@ -67,11 +68,11 @@ def create_app(test_config=None):
             'success': True,
             'questions': current_questions,
             'total_questions': len(questions),
-            'current_category': current_categories,
+            'current_category': None,
             'categories': list_cat,
         })
 
-    # route permettant dupprimer une question
+    # route permettant de supprimer une question
     @app.route("/questions/<int:question_id>", methods=['DELETE'])
     def delete_book(question_id):
         try:
@@ -94,16 +95,29 @@ def create_app(test_config=None):
         except:
             abort(422)
     
-    """
-    @TODO:
-    Create an endpoint to POST a new question,
-    which will require the question and answer text,
-    category, and difficulty score.
-
-    TEST: When you submit a question on the "Add" tab,
-    the form will clear and the question will appear at the end of the last page
-    of the questions list in the "List" tab.
-    """
+    # poster une nouvelle question
+    @app.route('/questions', methods=['POST'])
+    def create_new_question():
+        body = request.get_json()
+        new_question = body.get('question', None)
+        new_answer = body.get('answer', None)
+        new_categorie = body.get('category', None)
+        new_difficulty = body.get('difficulty', None)
+        try:
+            question = Question(question=new_question, answer=new_answer, 
+                                category=new_categorie, difficulty=new_difficulty)
+            question.insert()
+            select = Question.query.order_by(Question.id).all()
+            current_questions = paginate_question(request, select)
+            
+            return jsonify({
+                'success': True,
+                'created': question.id,
+                'questions': current_questions,
+                'total_question': len(Question.query.all())
+            })
+        except:
+            abort(422)
 
     """
     @TODO:
@@ -115,7 +129,26 @@ def create_app(test_config=None):
     only question that include that string within their question.
     Try using the word "title" to start.
     """
-
+    # chercher une question
+    # affiche toutes les questions dont le titre correpond au terme entrer par le user
+    @app.route('/questions/search', methods=['POST'])
+    def search_question(): 
+        body = request.get_json()
+        question = body.get("questions", None)
+        try:
+            result = Question.query.filter(Question.question.ilike(f'%{question}%')).order_by(Question.id).all()
+            current_questions = paginate_question(request, result)
+            
+            return jsonify({
+                'success': True,
+                'questions': current_questions,
+                'total_questions': len(result),
+                'current_question': None,
+            })
+        except:
+            abort(404)
+        
+    
     """
     @TODO:
     Create a GET endpoint to get questions based on category.
