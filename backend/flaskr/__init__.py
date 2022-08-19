@@ -119,16 +119,6 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    """
-    @TODO:
-    Create a POST endpoint to get questions based on a search term.
-    It should return any questions for whom the search term
-    is a substring of the question.
-
-    TEST: Search by any phrase. The questions list will update to include
-    only question that include that string within their question.
-    Try using the word "title" to start.
-    """
     # chercher une question
     # affiche toutes les questions dont le titre correpond au terme entrer par le user
     @app.route('/questions/search', methods=['POST'])
@@ -147,7 +137,23 @@ def create_app(test_config=None):
             })
         except:
             abort(404)
-        
+    
+    # question permetant d'afficher toutes les question d'une  categorie
+    @app.route('/categories/<int:category_id>/questions')    
+    def get_question_by_category(category_id):
+        try:
+            questions = Question.query.filter(Question.category == str(category_id)).order_by(Question.id).all()
+            current_questions = paginate_question(request, questions)
+            
+            return jsonify({
+                'success': True,
+                'questions': current_questions,
+                'current_category': category_id,
+                'total_questions': len(current_questions)
+            })
+        except:
+            abort(404)
+            
     
     """
     @TODO:
