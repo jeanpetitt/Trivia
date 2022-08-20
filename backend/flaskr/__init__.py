@@ -1,3 +1,4 @@
+from hashlib import new
 import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -105,6 +106,16 @@ def create_app(test_config=None):
         new_categorie = body.get('category', None)
         new_difficulty = body.get('difficulty', None)
         try:
+            # rendre l'envoi des donnees au format json obligatoire
+            # comme avec un formulaire. tout simplement on ne peut pas
+            # envoyer les donnees si au lieu de {'question': 'ma question'} on met
+            # {'ques':'ma question'} ou {'question': ''}
+            if ((new_question == None or new_question == '') or 
+                (new_answer == None or new_answer == '') or 
+                (new_categorie == None or new_categorie == '') or 
+                (new_difficulty == None or new_difficulty == '')):
+                abort(422)
+                
             question = Question(question=new_question, answer=new_answer, 
                                 category=new_categorie, difficulty=new_difficulty)
             question.insert()
@@ -127,6 +138,9 @@ def create_app(test_config=None):
     def search_question(): 
         body = request.get_json()
         question = body.get("search", None)
+        
+        if question == None or question == '':
+                abort(422)
         try:
             # filtrer toutes les questions dont les titres correpondent
             # au terme rechercher de maniere a ce que cela soit non sensible a la casse
