@@ -87,7 +87,7 @@ def create_app(test_config=None):
                 {
                     "success": True,
                     "deleted": question_id,
-                    "question": current_questions,
+                    "question": current_questions, 
                     "total_questions": len(Question.query.all()),
                 }
             )
@@ -124,9 +124,13 @@ def create_app(test_config=None):
     @app.route('/questions/search', methods=['POST'])
     def search_question(): 
         body = request.get_json()
-        question = body.get("questions", None)
+        question = body.get("search", None)
         try:
+            # filtrer toutes les questions dont les titres correpondent
+            # au terme rechercher de maniere a ce que cela soit non sensible a la casse
             result = Question.query.filter(Question.question.ilike(f'%{question}%')).order_by(Question.id).all()
+            
+            # paginer le resultat des questions trouves
             current_questions = paginate_question(request, result)
             
             return jsonify({
@@ -154,15 +158,35 @@ def create_app(test_config=None):
         except:
             abort(404)
             
-    
-    """
-    @TODO:
-    Create a GET endpoint to get questions based on category.
+    @app.route('/quizzes', methods=['POST'])
+    def play_quiz():
 
-    TEST: In the "List" tab / main screen, clicking on one of the
-    categories in the left column will cause only questions of that
-    category to be shown.
-    """
+        try:
+
+            body = request.get_json()
+
+            if not ('quiz_category' in body and 'previous_questions' in body):
+                abort(422)
+
+            category = body.get('quiz_category')
+            previous_questions = body.get('previous_questions')
+
+            if category['type'] == 'click':
+                available_questions = Question.query.filter(
+                    Question.id.notin_((previous_questions))).all()
+            else:
+                available_questions = Question.query.filter_by(
+                    category=category['id']).filter(Question.id.notin_((previous_questions))).all()
+
+            new_question = available_questions[random.randrange(
+                0, len(available_questions))].format() if len(available_questions) > 0 else None
+
+            return jsonify({
+                'success': True,
+                'question': new_question
+            })
+        except:
+            abort(422)
 
     """
     @TODO:
@@ -176,11 +200,22 @@ def create_app(test_config=None):
     and shown whether they were correct or not.
     """
 
-    """
-    @TODO:
-    Create error handlers for all expected errors
-    including 404 and 422.
-    """
+    # personnalisation des ereurs 404 et  422
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "ressource Not found"
+        }), 40
+        
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+        "success": False,
+        "error": 422,
+        "message": "unprocessable"
+        }), 422
 
     return app
 
