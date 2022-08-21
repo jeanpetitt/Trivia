@@ -1,49 +1,100 @@
-# API Development and Documentation Final Project
+# Trivia API
+  - Trivia est un jeux de Question et Reponse. il permet au joueur de s'instruire avant
+  de commencer a jouer au jeu en les offrant une liste de questions avec reponse dont ils pourront essayer de les memoriser et d'applquer ce qu'ils auront appris. Ils egalement la possibilite d'ajouter une question avec une reponse a la question, la categorie a laquelle la question ainsi que le degre de difficulter
+  `NB: les reponses founient lors du deroulement du jeu sont sensible a la casse c'est a dire que si une reponse contient une Majuscule, a la place vous mettez une minuscule; la reponse sera incorrecte` 
 
-## Trivia App
+### Pre-requis Developement local
+Les développeurs utilisant ce projet doivent déjà avoir Python3, pip et node installés sur leurs machines locales.
+sinon consultez 
+> [Telecharger la derniere version de python ](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python) 
+> [Telecharger node](https://nodejs.org/en/download)
 
-Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
+# A propos des Stack
+`backend`
+`fontend`
 
-That's where you come in! Help them finish the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. The application must:
+#### Backend
+Naviguez dans le dossier ` backend` et executer
+```pip3 intall -r requirements.txt```
+tous les packages requis sont inclus dans le fichier requirements.txt.
+pour lancer cette application executer les commandes suivant:
+  - pour les utilisateurs windows:
+```
+  set FLASK_APP=flaskr
+  set FLASK_ENV=development
+  flask run
+```
+  - pour les utilisateur linux:
+```  
+  export FLASK_APP=flaskr
+  export FLASK_ENV=development
+  flask run
+```
+Ces commandes mettent l'application en développement et ordonnent à notre application d'utiliser le fichier '__init__.py' dans notre dossier flaskr. Travailler en mode développement affiche un débogueur interactif dans la console et redémarre le serveur chaque fois que des modifications sont apportées. L'application est exécutée sur `http://127.0.0.1:5000/` par défaut et est un proxy dans la configuration frontend.
 
-1. Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer.
-2. Delete questions.
-3. Add questions and require that they include question and answer text.
-4. Search for questions based on a text query string.
-5. Play the quiz game, randomizing either all questions or within a specific category.
+Une fois l'applicationn lancer elle vas creer une base de donnee Trivia, il vas falloir la remplir avec les donnees. Pour cela suivez les instructions suivantes:
+```
+dropdb trivia
+createdb trivia
+```
+ensuite assurez-vous que vous vous trouvez dans le dossier backend dans un terminal et executez:
+```
+psql < trivia.psql
+```
+ou 
+```
+psql < trivia.psql -U postgres -h localhost trivia
+```
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others.
+#### Frontend
+Depuis le dossier frontend, executer les commandes suivantes pour lancer le client frontend:
+```
+npm install // only once to install dependencies
+npm start 
+```
 
-## Starting and Submitting the Project
+par defaut, le frontend se lancera sur localhost:3000. 
+consultez: 
+> [README frontend](./frontend/README.md) pour plus de detail
+### Tests
+Etant dans le dossier `backend` tapez les commandes suivantes:
+```
+dropdb trivia_test
+createdb trivia_test
+```
+```
+psql bookshelf_test < books.psql
+```
+or 
+```
+psql trivia_test < trivia.psql -U postgres -h localhost bookshelf_test
+```
+```
+python test_flaskr.py
+```
+La première fois que vous exécutez les tests, omettez la commande dropdb.
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the project repository and [clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom.
+Tous les tests sont conservés dans ce fichier et doivent être maintenus au fur et à mesure que des mises à jour sont apportées aux fonctionnalités de l'application.
 
-## About the Stack
+## pour commencer
+### Error Handling
+Les erreurs sont renvoyées sous forme d'objets JSON au format suivant :
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+L'API renvoie trois types d'erreur lorsque les demandes échouent:
+- 400: Bad Request / requete errone
+- 404: Resource Not Found / ressource non trouver
+- 422: Not Processable / intraitable
 
-We started the full stack application for you. It is designed with some key functional areas:
+### Endpoints / points de terminaison
+pour en savoir plus sur les points de teminaison en utilisant ``curl`` cliquer sur [backend README](./backend/README.md)
 
-### Backend
+## Deployement N/A
 
-The [backend](./backend/README.md) directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in `__init__.py` to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
-
-1. `backend/flaskr/__init__.py`
-2. `backend/test_flaskr.py`
-
-> View the [Backend README](./backend/README.md) for more details.
-
-### Frontend
-
-The [frontend](./frontend/README.md) directory contains a complete React frontend to consume the data from the Flask server. If you have prior experience building a frontend application, you should feel free to edit the endpoints as you see fit for the backend you design. If you do not have prior experience building a frontend application, you should read through the frontend code before starting and make notes regarding:
-
-1. What are the end points and HTTP methods the frontend is expecting to consume?
-2. How are the requests from the frontend formatted? Are they expecting certain parameters or payloads?
-
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. The places where you may change the frontend behavior, and where you should be looking for the above information, are marked with `TODO`. These are the files you'd want to edit in the frontend:
-
-1. `frontend/src/components/QuestionView.js`
-2. `frontend/src/components/FormView.js`
-3. `frontend/src/components/QuizView.js`
-
-By making notes ahead of time, you will practice the core skill of being able to read and understand code and will have a simple plan to follow to build out the endpoints of your backend API.
-
-> View the [Frontend README](./frontend/README.md) for more details.
+## Autheur
+Jean Petit, etudiant a udacity 
