@@ -383,9 +383,9 @@ curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: applicati
 - Generalites:
     - renvoi la liste des questions dont la categorie correspond a category_id
     - Exemple : 
-``` 
-curl http://127.0.0.1:5000/categories/6/questions
-```
+  ``` 
+   curl http://127.0.0.1:5000/categories/6/questions
+  ```
 
 ```
 {
@@ -413,11 +413,10 @@ curl http://127.0.0.1:5000/categories/6/questions
 #### POST /quizzes
 -Generalite:
     - cela permet d'envoyer au serveur la liste des questions precedentes et la categorie courante et le serveur renvoie aleartoirement une nouvelle question
-    - Exemple 
-``` 
-curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}' 
-
-```
+    - Exemple: 
+  ```
+     curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}'
+  ```
 
 
 ```
