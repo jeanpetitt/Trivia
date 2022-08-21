@@ -332,9 +332,9 @@ curl http://127.0.0.1:5000/categories
 -Generalites:
    - afficher la liste des questions dont le titre de la question correspond(non sensible a la casse) au mot envoyer via la methode post du user
    - Exemple:
-    ```
-  curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'
-    ```
+  ```
+    curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'
+  ```
 ```
 {
   "current_question": null, 
