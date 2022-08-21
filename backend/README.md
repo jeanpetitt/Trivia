@@ -333,8 +333,8 @@ curl http://127.0.0.1:5000/categories
    - afficher la liste des questions dont le titre de la question correspond(non sensible a la casse) au mot envoyer via la methode post du user
    - Exemple:
     ```
-curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'
-  ```
+  curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'
+    ```
 ```
 {
   "current_question": null, 
@@ -414,8 +414,8 @@ curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: applicati
 -Generalite:
     - cela permet d'envoyer au serveur la liste des questions precedentes et la categorie courante et le serveur renvoie aleartoirement une nouvelle question
     - Exemple: 
-  ```
-     curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}'
+   ```
+    curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}'
   ```
 
 
