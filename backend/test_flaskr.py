@@ -91,24 +91,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "ressource Not found")
         
     # test de suppression d'une question
-    # def test_delete_question(self):
-    #     print('************************************************')
-    #     print('Delete test:')
-    #     print('\t\t before delete: total_question=' ,len(Question.query.all()))
-    #     _test = self.client().delete("/questions/15/delete")
-    #     data = json.loads(_test.data)
-    #     # obtenir l'id de la question a supprimer
-    #     question = Question.query.filter(Question.id == 15).one_or_none()
+    def test_delete_question(self):
+        print('************************************************')
+        print('Delete test:')
+        print('\t\t before delete: total_question=' ,len(Question.query.all()))
+        _test = self.client().delete("/questions/15/delete")
+        data = json.loads(_test.data)
+        # obtenir l'id de la question a supprimer
+        question = Question.query.filter(Question.id == 15).one_or_none()
     
-    #     # verifier le succes de la suppresion de la question
-    #     self.assertEqual(_test.status_code, 200)
-    #     self.assertEqual(data["success"], True)
-    #     self.assertEqual(data["deleted"], 15)
-    #     self.assertTrue(data["questions"])
-    #     self.assertTrue(data["total_questions"])
-    #     self.assertEqual(question, None)
-    #     print('\t\t after delete: total_question=', data['total_questions'])
-    #     print('*************************************************')
+        # verifier le succes de la suppresion de la question
+        self.assertEqual(_test.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(data["deleted"], 15)
+        self.assertTrue(data["questions"])
+        self.assertTrue(data["total_questions"])
+        self.assertEqual(question, None)
+        print('\t\t after delete: total_question=', data['total_questions'])
+        print('*************************************************')
     
     # test de suppression echoue(error) si l'id de la question est introuvable
     def test_422_if_id_question_does_not_exist(self):
@@ -119,22 +119,22 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     # test de creation d'une nouvelle question
-    # def test_create_new_question(self):
-    #     # optenir le nombre de question avant ajout
-    #     print('************************************************')
-    #     print('Create_question test:')
-    #     print('\t\t before add: total_question=' ,len(Question.query.all()))
-    #     _test = self.client().post("/questions", json=self.new_question)
-    #     data = json.loads(_test.data)
+    def test_create_new_question(self):
+        # optenir le nombre de question avant ajout
+        print('************************************************')
+        print('Create_question test:')
+        print('\t\t before add: total_question=' ,len(Question.query.all()))
+        _test = self.client().post("/questions", json=self.new_question)
+        data = json.loads(_test.data)
 
-    #     self.assertEqual(_test.status_code, 200)
-    #     self.assertEqual(data["success"], True)
-    #     self.assertTrue(data["created"])
-    #     self.assertTrue(data["questions"]) 
-    #     self.assertTrue(data["total_questions"])
-    #     self.assertEqual(data["current_category"], None)  
-    #     print('\t\t after add: total_question=', data['total_questions'])
-    #     print('*************************************************') 
+        self.assertEqual(_test.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["created"])
+        self.assertTrue(data["questions"]) 
+        self.assertTrue(data["total_questions"])
+        self.assertEqual(data["current_category"], None)  
+        print('\t\t after add: total_question=', data['total_questions'])
+        print('*************************************************') 
     
     # erreur si le chemin qu'on tente d'acceder pour envoyer les donnees ne correspond 
     # a celui defini 
