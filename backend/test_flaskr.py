@@ -27,6 +27,14 @@ class TriviaTestCase(unittest.TestCase):
         self.search = {
             'search': 'who'
         }
+        self.play_quizz ={
+            'previous_questions': [5, 9,  13],
+            'quiz_category': {'type': 'click', 'id': 0},
+        }
+        self.data_play_error = {
+            'previous_questions': '',
+            'quiz_category': {'type': 'click', 'id': 0},
+        }
 
         # binds the app to the current context
         with self.app.app_context():
@@ -111,7 +119,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     # test de creation d'une nouvelle question
-    # def test_create_new_book(self):
+    # def test_create_new_question(self):
     #     # optenir le nombre de question avant ajout
     #     print('************************************************')
     #     print('Create_question test:')
@@ -159,6 +167,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "ressource Not found")
     
+    # test de question par categorie
     def test_get_question_by_category(self):
         _test = self.client().get("/categories/6/questions")
         data = json.loads(_test.data)       
@@ -170,13 +179,33 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["questions"])
         self.assertTrue(data["total_questions"])
     
-    
+    # erreur si l'url par lequel on souhaite acceder au question d'une category
+    # est incorrecte
     def test_404_if_url_category_does_not_exist(self):
         _test = self.client().get("/categorie/1000/questions")
         data = json.loads(_test.data)
         self.assertEqual(_test.status_code, 404)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "ressource Not found")    
+        self.assertEqual(data["message"], "ressource Not found")   
+    
+    # test de mise en place du jeu
+    def test_play_quizz_game(self):
+        _test = self.client().post('/quizzes', json=self.play_quizz)
+        data = json.loads(_test.data)
+         
+        #  verification du succes du test
+        self.assertEqual(_test.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['question'])
+    
+    # erreur 422 si le format de donne envoyer est invalide
+    def test_422_if_data_play_game_are_not_valid(self):
+        _test = self.client().post("/quizzes", json=self.data_play_error)
+        data = json.loads(_test.data)
+        self.assertEqual(_test.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+
     
 # Make the tests conveniently executable
 if __name__ == "__main__":

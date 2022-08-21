@@ -199,6 +199,9 @@ def create_app(test_config=None):
             category = body.get('quiz_category')
             previous_questions = body.get('previous_questions')
 
+            # cas general s'il pas de type choisit et que l'id=0
+            # on creer une liste dans laquelle la question sera chosit dans toute
+            #  categorie confondu
             if category['type'] == 'click':
                 _questions = Question.query.filter(
                     Question.id.notin_((previous_questions))).all()
