@@ -62,6 +62,12 @@ class FormView extends Component {
   };
 
   render() {
+    const obj = this.state.categories
+    var arr;
+    if (obj){
+      arr = Object.values(obj)
+      console.log('list arry',arr)
+    }
     return (
       <div id='add-form'>
         <h2>Add a New Trivia Question</h2>
@@ -91,10 +97,10 @@ class FormView extends Component {
           <label>
             Category
             <select name='category' onChange={this.handleChange}>
-              {Object.keys(this.state.categories).map((id) => {
+              {arr.map(cat => {
                 return (
-                  <option key={id} value={id}>
-                    {this.state.categories[id]}
+                  <option key={cat.id} value={cat.id}>
+                    {cat.type}
                   </option>
                 );
               })}
