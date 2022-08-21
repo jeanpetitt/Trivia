@@ -63,6 +63,16 @@ def create_app(test_config=None):
         categories = Category.query.all()
         list_cat = [categorie.format() for categorie in categories]
         
+        # obtenir un nomre de page variable en fonction de la pagination
+        # par 10 question
+        nb_page = (len(questions) / 10)
+        if isinstance(nb_page, int):
+            return nb_page
+        else:
+            nb_page = int(nb_page) + 1
+        print(nb_page)
+
+        
         if len(current_questions) == 0:
             abort(404)
             
@@ -71,6 +81,7 @@ def create_app(test_config=None):
             'questions': current_questions,
             'total_questions': len(questions),
             'current_category': None,
+            'nbre_page': nb_page,
             'categories': list_cat,
         })
 
@@ -164,11 +175,13 @@ def create_app(test_config=None):
         try:
             questions = Question.query.filter(Question.category == str(category_id)).order_by(Question.id).all()
             current_questions = paginate_question(request, questions)
+            current_category = Category.query.filter(Category.id == category_id)
             
             return jsonify({
                 'success': True,
                 'questions': current_questions,
                 'current_category': category_id,
+                #current_category.type,
                 'total_questions': len(current_questions)
             })
         except:
