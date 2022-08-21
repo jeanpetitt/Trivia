@@ -3,9 +3,12 @@
 
 #### GET /categories
 - Généralités: 
-- Renvoie une liste d'objets de categories
+  - Renvoie une liste d'objets de categories
 
-- Exemple : ```curl http://127.0.0.1:5000/categories```
+  - Exemple : 
+```
+curl http://127.0.0.1:5000/categories
+```
 
 ```
 {
@@ -41,9 +44,12 @@
 
 #### GET /questions
 - Generalites:
-    renvoi une liste de pagination de 10 questions dont un entier indique le numero de page, une liste de question, le nombre total de questions et la categorie courante
-- Exemple : ``` curl http://localhost:5000/questions?page=2 ```
-``
+  - renvoi une liste de pagination de 10 questions dont un entier indique le numero de page, une liste de question, le nombre total de questions et la categorie courante
+  - Exemple : 
+  ``` 
+  curl http://localhost:5000/questions?page=2 
+  ```
+```
 {
   "categories": [
     {
@@ -148,11 +154,14 @@
   "success": true, 
   "total_questions": 20
 }
-``
+```
 #### DELETE /questions/{question_id/delete}
 - Generalites:
-    - Supprime la question de l'ID donné s'il existe. Renvoie l'ID de la question supprimé, la valeur de réussite, le nombre total de livres et la liste des livres 
-- Exemple :```curl -X DELETE http://127.0.0.1:5000/questions/13/delete```
+  - Supprime la question de l'ID donné s'il existe. Renvoie l'ID de la question supprimé, la valeur de réussite, le nombre total de livres et la liste des livres 
+  - Exemple :
+  ```
+  curl -X DELETE http://127.0.0.1:5000/questions/13/delete
+  ```
 ```
 {
   "deleted": 13, 
@@ -236,7 +245,9 @@
 - General:
     - cree une question et renvoi l'id de la question ajoutee, le nombre total de question et la liste des questions.
     - Exemple:
-     ```curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"who is the president of Cameroon", "answer":"Paul Bya","category":"4", "difficulty":5}```
+     ```
+     curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"who is the president of Cameroon", "answer":"Paul Bya","category":"4", "difficulty":5}
+     ```
 ```
 {
   "created": 27, 
@@ -321,7 +332,9 @@
 -Generalites:
    - afficher la liste des questions dont le titre de la question correspond(non sensible a la casse) au mot envoyer via la methode post du user
    - Exemple:
-    ```curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'```
+    ```
+    curl  http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"which"}'
+    ```
 ```
 {
   "current_question": null, 
@@ -369,7 +382,9 @@
 #### GEt /categories/category_id/questions/
 - Generalites:
     - renvoi la liste des questions dont la categorie correspond a category_id
-    - Exemple : ``` curl http://127.0.0.1:5000/categories/6/questions```
+    - Exemple : 
+    ``` curl http://127.0.0.1:5000/categories/6/questions
+    ```
 
 ```
 {
@@ -397,7 +412,9 @@
 #### POST /quizzes
 -Generalite:
     - cela permet d'envoyer au serveur la liste des questions precedentes et la categorie courante et le serveur renvoie aleartoirement une nouvelle question
-    - Exemple ``` curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}' ```
+    - Exemple: 
+  ``` curl  http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[11, 10], "quiz_category":{"type": "click", "id":0}}'
+    ```
 ```
 {
   "question": {
