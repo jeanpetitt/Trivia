@@ -100,6 +100,15 @@ class QuizView extends Component {
   };
 
   renderPrePlay() {
+    // creons un objet constant qui vas stocke la liste de dictionnaire
+    // key={id, type}
+    const obj = this.state.categories
+    var arr;
+    if (obj){
+      //  creer un tableau de liste contenant les key={id, type} permettant
+      // de rendre plus facile le map
+      arr = Object.values(obj)
+    }
     return (
       <div className='quiz-play-holder'>
         <div className='choose-header'>Choose Category</div>
@@ -107,17 +116,18 @@ class QuizView extends Component {
           <div className='play-category' onClick={this.selectCategory}>
             ALL
           </div>
-          {Object.keys(this.state.categories).map((id) => {
+          {arr.map(cat =>  {
+            console.log(cat)
             return (
               <div
-                key={id}
-                value={id}
+                key={cat.id}
+                value={cat.id}
                 className='play-category'
                 onClick={() =>
-                  this.selectCategory({ type: this.state.categories[id], id })
+                  this.selectCategory({ type: cat.type, id: cat.id})
                 }
               >
-                {this.state.categories[id]}
+                {cat.type}
               </div>
             );
           })}

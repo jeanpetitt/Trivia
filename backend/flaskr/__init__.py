@@ -187,29 +187,35 @@ def create_app(test_config=None):
         except:
             abort(404)
             
+    # mise en place du jeu proprement dit     
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
 
         try:
-
             body = request.get_json()
-
-            if not ('quiz_category' in body and 'previous_questions' in body):
-                abort(422)
+            # if not ('quiz_category' in body and 'previous_questions' in body):
+            #     abort(422)
 
             category = body.get('quiz_category')
             previous_questions = body.get('previous_questions')
 
             if category['type'] == 'click':
-                available_questions = Question.query.filter(
+                _questions = Question.query.filter(
                     Question.id.notin_((previous_questions))).all()
             else:
-                available_questions = Question.query.filter_by(
+        
+            # creer une liste de question de tel sorte que l'id des questions
+            # precedente ne se retrouve pas a l'interieur
+                _questions = Question.query.filter_by(
                     category=category['id']).filter(Question.id.notin_((previous_questions))).all()
 
-            new_question = available_questions[random.randrange(
-                0, len(available_questions))].format() if len(available_questions) > 0 else None
+            # dans la liste des question creer choisir aleartoirement un question
+            new_question = _questions[random.randrange(
+                0, len(_questions))].format() if len(_questions) > 0 else None
 
+            print(category)
+            print(previous_questions)
+            
             return jsonify({
                 'success': True,
                 'question': new_question
@@ -217,17 +223,6 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    """
-    @TODO:
-    Create a POST endpoint to get questions to play the quiz.
-    This endpoint should take category and previous question parameters
-    and return a random questions within the given category,
-    if provided, and that is not one of the previous questions.
-
-    TEST: In the "Play" tab, after a user selects "All" or a category,
-    one question at a time is displayed, the user is allowed to answer
-    and shown whether they were correct or not.
-    """
 
     # personnalisation des ereurs 404 et  422
     @app.errorhandler(404)
