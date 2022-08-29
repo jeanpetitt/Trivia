@@ -1,6 +1,6 @@
 # Trivia API
   - Trivia est un jeux de Question et Reponse. il permet au joueur de s'instruire avant
-  de commencer a jouer au jeu en les offrant une liste de questions avec reponse dont ils pourront essayer de les memoriser et d'applquer ce qu'ils auront appris. Ils egalement la possibilite d'ajouter une question avec une reponse a la question, la categorie a laquelle la question ainsi que le degre de difficulter
+  de commencer à jouer au jeu; en les offrant une liste de questions avec reponse dont ils pourront essayer de les memoriser et d'applquer ce qu'ils auront appris. Il offre egalement la possibilite d'ajouter une question avec une reponse a la question, la categorie a laquelle la question ainsi que le degre de difficulter
   `NB: les reponses founient lors du deroulement du jeu sont sensible a la casse c'est a dire que si une reponse contient une Majuscule, a la place vous mettez une minuscule; la reponse sera incorrecte` 
 
 ### Pre-requis Developement local
